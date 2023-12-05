@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
 
-const PRIME_NUMBERS = [2, 3, 5, 7, 11, 13, 17, 19, 23];
+const PRIME_NUMBERS = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31];
 
 function getNumberColor(n) {
   if (PRIME_NUMBERS.includes(n)) {
