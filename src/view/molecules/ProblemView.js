@@ -42,7 +42,7 @@ export default function ProblemView({ onClickAnswer }) {
   const correctAnswer = a * b;
 
   return (
-    <Box sx={{ m: 1, p: 1,marginTop: 4 }}>
+    <Box sx={{ m: 1, p: 1, marginTop: 4 }}>
       <Typography variant="h1">
         <NumberView n={a} /> {UNICODE_MULTIPLICATION_SYMBOL}{" "}
         <NumberView n={b} />
