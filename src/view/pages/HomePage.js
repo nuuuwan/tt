@@ -14,23 +14,25 @@ export default class HomePage extends Component {
     this.state = { resultList: [], timeStart: getUnixTime() };
   }
 
-  onClickAnswer(isCorrect) {
+  onClickAnswer(isCorrect, correctAnswer) {
     let resultList = this.state.resultList;
     const newTimeStart = getUnixTime();
     const timeDelta = newTimeStart - this.state.timeStart;
-    let result;
     if (!isCorrect) {
-      result = 0;
+      resultList = [];
     } else {
+      let level;
       if (timeDelta > MAX_TIME_DELTA * 2) {
-        result = 1;
+        level = 0;
       } else if (timeDelta > MAX_TIME_DELTA) {
-        result = 2;
+        level = 1;
       } else {
-        result = 3;
+        level = 2;
       }
+      const mult = 10 ** level;
+      const points = correctAnswer * mult;
+      resultList.push({ level, points });
     }
-    resultList.push(result);
     this.setState({ resultList, timeStart: newTimeStart });
   }
 
