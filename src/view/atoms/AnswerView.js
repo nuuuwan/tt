@@ -4,7 +4,7 @@ export default function AnswerView({ answer, correctAnswer, onClickAnswer }) {
   const isCorrect = answer === correctAnswer;
 
   const onClickAnswerInner = function () {
-    onClickAnswer(isCorrect, correctAnswer);
+    onClickAnswer(isCorrect);
   };
   return (
     <Button variant="outlined" sx={{ m: 1, p: 1 }} onClick={onClickAnswerInner}>

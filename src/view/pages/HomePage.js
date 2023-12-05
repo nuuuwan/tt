@@ -1,46 +1,64 @@
 import { Component } from "react";
 import { Box } from "@mui/material";
 import { ProblemView, ScoreView, VersionView } from "../molecules";
-
-const MAX_TIME_DELTA = 5;
-
-function getUnixTime() {
-  return Math.floor(Date.now() / 1000);
-}
+import { Time } from "../../nonview/core";
 
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
-    this.state = { resultList: [], timeStart: getUnixTime() };
+    this.state = {
+      timeStart: Time.getUnixTime(),
+      totalPoints: 1_000,
+      topScore: HomePage.getTopScore(),
+    };
   }
 
-  onClickAnswer(isCorrect, correctAnswer) {
-    let resultList = this.state.resultList;
-    const newTimeStart = getUnixTime();
-    const timeDelta = newTimeStart - this.state.timeStart;
+  static getTopScore() {
+    const topScore = localStorage.getItem("topScore") || 0;
+    return parseInt(topScore);
+  }
+
+  static setTopScore(topScore) {
+    localStorage.setItem("topScore", topScore);
+  }
+
+  onClickAnswer(isCorrect) {
     if (!isCorrect) {
-      resultList = [];
-    } else {
-      let level;
-      if (timeDelta > MAX_TIME_DELTA * 2) {
-        level = 0;
-      } else if (timeDelta > MAX_TIME_DELTA) {
-        level = 1;
-      } else {
-        level = 2;
-      }
-      const mult = 10 ** level;
-      const points = correctAnswer * mult;
-      resultList.push({ level, points });
+      window.location.reload();
+      return;
     }
-    this.setState({ resultList, timeStart: newTimeStart });
+
+    const { timeStart, totalPoints, topScore } = this.state;
+
+    const newTimeStart = Time.getUnixTime();
+    const deltaTime = newTimeStart - timeStart;
+    const { actualPoints, _ } = Time.actualPoints(totalPoints, deltaTime); // eslint-disable-line no-unused-vars
+
+    let newTopScore = topScore;
+    if (actualPoints > topScore) {
+      newTopScore = actualPoints;
+      HomePage.setTopScore(newTopScore);
+    }
+
+    const newTotalPoints = actualPoints + 1_000;
+
+    this.setState({
+      timeStart: newTimeStart,
+      totalPoints: newTotalPoints,
+      topScore: newTopScore,
+    });
   }
 
   render() {
+    const { timeStart, totalPoints, topScore } = this.state;
     return (
       <Box>
         {" "}
-        <ScoreView resultList={this.state.resultList} />
+        <ScoreView
+          timeStart={timeStart}
+          totalPoints={totalPoints}
+          topScore={topScore}
+        />
         <ProblemView onClickAnswer={this.onClickAnswer.bind(this)} />
         <VersionView />
       </Box>
