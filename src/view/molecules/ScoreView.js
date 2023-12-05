@@ -21,7 +21,7 @@ export default function ScoreView({ resultList }) {
     return sum + points;
   }, 0);
   return (
-    <Box sx={{ height: 200 }}>
+    <Box sx={{ height: 120 }}>
       {" "}
       {points > 0 ? (
         <Typography variant="h6">{points.toLocaleString()}</Typography>
