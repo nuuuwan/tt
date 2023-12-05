@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { NumberView, AnswerView } from "../atoms";
 
-const LIMIT_TIMES_TABLE = 25;
+const LIMIT_TIMES_TABLE = 4;
 const UNICODE_MULTIPLICATION_SYMBOL = "\u00D7";
 function getRandomNumber(minNumber, maxNumber) {
   return Math.floor(Math.random() * (maxNumber - minNumber + 1) + minNumber);
