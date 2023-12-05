@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Box } from "@mui/material";
-import { ProblemView, ScoreView } from "../molecules";
+import { ProblemView, ScoreView, VersionView } from "../molecules";
 
 const MAX_TIME_DELTA = 5;
 
@@ -22,10 +22,12 @@ export default class HomePage extends Component {
     if (!isCorrect) {
       result = 0;
     } else {
-      if (timeDelta > MAX_TIME_DELTA) {
+      if (timeDelta > MAX_TIME_DELTA * 2) {
         result = 1;
-      } else {
+      } else if (timeDelta > MAX_TIME_DELTA) {
         result = 2;
+      } else {
+        result = 3;
       }
     }
     resultList.push(result);
@@ -38,6 +40,7 @@ export default class HomePage extends Component {
         {" "}
         <ScoreView resultList={this.state.resultList} />
         <ProblemView onClickAnswer={this.onClickAnswer.bind(this)} />
+        <VersionView />
       </Box>
     );
   }

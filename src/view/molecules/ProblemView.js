@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { AnswerView } from "../atoms";
+import { NumberView, AnswerView } from "../atoms";
 
 const LIMIT_TIMES_TABLE = 25;
 const UNICODE_MULTIPLICATION_SYMBOL = "\u00D7";
@@ -44,7 +44,8 @@ export default function ProblemView({ onClickAnswer }) {
   return (
     <Box sx={{ m: 1, p: 1 }}>
       <Typography variant="h1">
-        {a} {UNICODE_MULTIPLICATION_SYMBOL} {b}
+        <NumberView n={a} /> {UNICODE_MULTIPLICATION_SYMBOL}{" "}
+        <NumberView n={b} />
       </Typography>
 
       {answers.map(function (answer, iAnswer) {
