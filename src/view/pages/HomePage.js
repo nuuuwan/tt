@@ -4,6 +4,7 @@ import { ProblemView, ScoreView, VersionView } from "../molecules";
 import { Time, Problem } from "../../nonview/core";
 
 export default class HomePage extends Component {
+  static T_TIMER_INTERVAL_MS = 1000;
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +17,7 @@ export default class HomePage extends Component {
   }
 
   componentDidMount() {
-    setInterval(this.onTimer.bind(this), 1000);
+    setInterval(this.onTimer.bind(this), HomePage.T_TIMER_INTERVAL_MS);
   }
 
   static getTopScore() {
