@@ -1,16 +1,17 @@
 import { Component } from "react";
 import { Box } from "@mui/material";
 import { ProblemView, ScoreView, VersionView } from "../molecules";
-import { Time } from "../../nonview/core";
+import { Time, Problem } from "../../nonview/core";
+
+
 
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
-    const totalPoints = 1_000;
     this.state = {
       timeStart: Time.getUnixTime(),
-      totalPoints,
-      actualPoints: totalPoints,
+      totalPoints: 0,
+      pointsForCurrentProblem: Problem.POINTS_PER_PROBLEM,
       topScore: HomePage.getTopScore(),
       problem: Problem.gen(),
     };
@@ -32,8 +33,12 @@ export default class HomePage extends Component {
   onTimer() {
     const { timeStart, totalPoints } = this.state;
     const deltaTime = Time.getUnixTime() - timeStart;
-    const actualPoints = Time.actualPoints(totalPoints, deltaTime); // eslint-disable-line no-unused-vars
-    this.setState({ actualPoints });
+    const pointsForCurrentProblem = Problem.getPointsForCurrent(deltaTime);
+    if (pointsForCurrentProblem + totalPoints < 0) {
+      window.location.reload();
+      return;
+    }
+    this.setState({ pointsForCurrentProblem });
   }
 
   onClickAnswer(isCorrect) {
@@ -42,38 +47,38 @@ export default class HomePage extends Component {
       return;
     }
 
-    const { topScore, actualPoints, problemId } = this.state;
+    let { topScore, totalPoints, pointsForCurrentProblem } = this.state;
+    totalPoints = totalPoints + pointsForCurrentProblem;
+    pointsForCurrentProblem = Problem.POINTS_PER_PROBLEM;
+    const problem = Problem.gen();
+    const timeStart = Time.getUnixTime();
 
-    let newTopScore = topScore;
-    if (actualPoints > topScore) {
-      newTopScore = actualPoints;
-      HomePage.setTopScore(newTopScore);
+    if (totalPoints > topScore) {
+      topScore = totalPoints;
+      HomePage.setTopScore(topScore);
     }
 
-    const newTotalPoints = actualPoints + 1_000;
-    const newTimeStart = Time.getUnixTime();
-    const newProblemId = problemId + 1;
+
 
     this.setState({
-      timeStart: newTimeStart,
-      totalPoints: newTotalPoints,
-      topScore: newTopScore,
-      problemId: newProblemId,
+      topScore, totalPoints, pointsForCurrentProblem,
+      problem, timeStart,
     });
   }
 
   render() {
-    const { actualPoints, topScore, problemId } = this.state;
-    console.debug("problem-view-" + problemId);
+    const { totalPoints, pointsForCurrentProblem, topScore, problem } = this.state;
+
     return (
       <Box>
         <ScoreView
-          key={"score-view-" + actualPoints + "-" + topScore}
-          actualPoints={actualPoints}
+          key={"score-view-" + totalPoints + "-" + pointsForCurrentProblem}
+          totalPoints={totalPoints}
+          pointsForCurrentProblem={pointsForCurrentProblem}
           topScore={topScore}
         />
         <ProblemView
-          key={"problem-view-" + problemId}
+          problem={problem}
           onClickAnswer={this.onClickAnswer.bind(this)}
         />
         <VersionView />

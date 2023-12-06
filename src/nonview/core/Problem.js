@@ -1,5 +1,8 @@
 export default class Problem {
   static LIMIT_TIMES_TABLE = 9;
+  static HALF_LIFE = 20;
+  static POINTS_PER_PROBLEM = 1_000;
+
   constructor(correctAnswer, candidateAnswerList) {
     this.correctAnswer = correctAnswer;
     this.candidateAnswerList = candidateAnswerList;
@@ -44,4 +47,9 @@ export default class Problem {
     const b = Problem.genNumber();
     return new Problem([a, b], Problem.genAnswerArr(a, b));
   }
+
+  static getPointsForCurrent(deltaTime) {
+    const p = deltaTime / Problem.HALF_LIFE;
+    return Math.ceil(this.POINTS_PER_PROBLEM * (1 - p));
+   }
 }
