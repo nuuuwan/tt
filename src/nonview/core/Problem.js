@@ -43,7 +43,9 @@ export default class Problem {
       (a + 5) * b,
       // 2
     ];
-    original = original.filter((n) => n >= 1 && n <= Problem.LIMIT_TIMES_TABLE ** 2 );
+    original = original.filter(
+      (n) => n >= 1 && n <= Problem.LIMIT_TIMES_TABLE ** 2
+    );
     original = Problem.dedupeArr(original);
     return original.sort((a, b) => a - b);
   }
