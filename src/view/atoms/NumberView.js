@@ -1,22 +1,22 @@
 import React from "react";
 import { Typography } from "@mui/material";
-
-const PRIME_NUMBERS = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31];
+import { Number } from "../../nonview/core";
 
 function getNumberColor(n) {
-  if (PRIME_NUMBERS.includes(n)) {
+  const number = new Number(n);
+  if (number.isPrime()) {
     return "#800";
   }
-  if (n % 2 === 0) {
+  if (number.isEven()) {
     return "#084";
   }
   return "#f80";
 }
 
-export default function NumberView({ n }) {
+export default function NumberView({ n, variant = "h1" }) {
   const color = getNumberColor(n);
   return (
-    <Typography variant="h1" component="span">
+    <Typography variant={variant} component="span">
       <span style={{ color }}>{n}</span>
     </Typography>
   );
