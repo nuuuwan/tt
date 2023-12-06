@@ -34,7 +34,7 @@ function genAnswerArr(a, b) {
   ]);
 }
 
-export default function ProblemView({ onClickAnswer }) {
+export default function ProblemView({ onClickAnswer, problem }) {
   const a = getRandomNumber(1, LIMIT_TIMES_TABLE);
   const b = getRandomNumber(1, LIMIT_TIMES_TABLE);
 

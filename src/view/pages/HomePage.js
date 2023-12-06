@@ -6,11 +6,18 @@ import { Time } from "../../nonview/core";
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
+    const totalPoints = 1_000;
     this.state = {
       timeStart: Time.getUnixTime(),
-      totalPoints: 1_000,
+      totalPoints,
+      actualPoints: totalPoints,
       topScore: HomePage.getTopScore(),
+      problem: Problem.gen(),
     };
+  }
+
+  componentDidMount() {
+    setInterval(this.onTimer.bind(this), 1000);
   }
 
   static getTopScore() {
@@ -22,17 +29,20 @@ export default class HomePage extends Component {
     localStorage.setItem("topScore", topScore);
   }
 
+  onTimer() {
+    const { timeStart, totalPoints } = this.state;
+    const deltaTime = Time.getUnixTime() - timeStart;
+    const actualPoints = Time.actualPoints(totalPoints, deltaTime); // eslint-disable-line no-unused-vars
+    this.setState({ actualPoints });
+  }
+
   onClickAnswer(isCorrect) {
     if (!isCorrect) {
       window.location.reload();
       return;
     }
 
-    const { timeStart, totalPoints, topScore } = this.state;
-
-    const newTimeStart = Time.getUnixTime();
-    const deltaTime = newTimeStart - timeStart;
-    const { actualPoints, _ } = Time.actualPoints(totalPoints, deltaTime); // eslint-disable-line no-unused-vars
+    const { topScore, actualPoints, problemId } = this.state;
 
     let newTopScore = topScore;
     if (actualPoints > topScore) {
@@ -41,25 +51,31 @@ export default class HomePage extends Component {
     }
 
     const newTotalPoints = actualPoints + 1_000;
+    const newTimeStart = Time.getUnixTime();
+    const newProblemId = problemId + 1;
 
     this.setState({
       timeStart: newTimeStart,
       totalPoints: newTotalPoints,
       topScore: newTopScore,
+      problemId: newProblemId,
     });
   }
 
   render() {
-    const { timeStart, totalPoints, topScore } = this.state;
+    const { actualPoints, topScore, problemId } = this.state;
+    console.debug("problem-view-" + problemId);
     return (
       <Box>
-        {" "}
         <ScoreView
-          timeStart={timeStart}
-          totalPoints={totalPoints}
+          key={"score-view-" + actualPoints + "-" + topScore}
+          actualPoints={actualPoints}
           topScore={topScore}
         />
-        <ProblemView onClickAnswer={this.onClickAnswer.bind(this)} />
+        <ProblemView
+          key={"problem-view-" + problemId}
+          onClickAnswer={this.onClickAnswer.bind(this)}
+        />
         <VersionView />
       </Box>
     );

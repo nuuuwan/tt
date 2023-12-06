@@ -6,16 +6,12 @@ export default class Time {
   }
 
   static actualPoints(totalPoints, deltaTime) {
-    let actualPoints, color;
     if (deltaTime < HALF_LIFE) {
       const p = deltaTime / HALF_LIFE;
-      actualPoints = Math.ceil(totalPoints - POINTS_FOR_SUM * p);
-      color = "#084";
-    } else {
-      const k = Math.pow(2, -(deltaTime - HALF_LIFE) / HALF_LIFE);
-      actualPoints = Math.ceil((totalPoints - POINTS_FOR_SUM) * k);
-      color = "#800";
+      return Math.ceil(totalPoints - POINTS_FOR_SUM * p);
     }
-    return { actualPoints, color };
+
+    const k = Math.pow(2, -(deltaTime - HALF_LIFE) / HALF_LIFE);
+    return Math.ceil((totalPoints - POINTS_FOR_SUM) * k);
   }
 }
