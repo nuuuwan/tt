@@ -56,7 +56,7 @@ export default class Problem {
       Math.floor((a * b) / 3),
       a * b * 3,
     ];
-    original = original.filter((n) => n > 0);
+    original = original.filter((n) => n >= 1 && n <= Problem.LIMIT_TIMES_TABLE ** 2 );
     original = Problem.dedupeArr(original);
     return original.sort((a, b) => a - b);
   }

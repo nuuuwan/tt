@@ -17,7 +17,7 @@ export default function NumberView({ n, variant = "h1" }) {
   const color = getNumberColor(n);
   return (
     <Typography variant={variant} component="span">
-      <span style={{ color }}>{n}</span>
+      <span style={{ color }}>{n.toLocaleString()}</span>
     </Typography>
   );
 }
