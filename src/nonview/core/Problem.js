@@ -31,8 +31,6 @@ export default class Problem {
   static genAnswerArr(a, b) {
     let original = [
       a * b,
-      a * b + 10,
-      a * b - 10,
       // 1
       a * (b + 1),
       (a + 1) * b,
@@ -44,17 +42,6 @@ export default class Problem {
       (a + 10) * b,
       (a + 5) * b,
       // 2
-      a * b - 2,
-      a * b + 2,
-      a * b + 2,
-      Math.floor((a * b) / 2),
-      a * b * 2,
-      // 3
-      a * b - 3,
-      a * b + 3,
-      a * b + 3,
-      Math.floor((a * b) / 3),
-      a * b * 3,
     ];
     original = original.filter((n) => n >= 1 && n <= Problem.LIMIT_TIMES_TABLE ** 2 );
     original = Problem.dedupeArr(original);
