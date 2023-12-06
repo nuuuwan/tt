@@ -22,4 +22,16 @@ export default class Number {
   isOdd() {
     return !this.isEven();
   }
+
+  getPrimeFactors() {
+    const factors = [];
+    let n = this.n;
+    for (let i = 2; i <= n; i++) {
+      while (n % i === 0) {
+        factors.push(i);
+        n /= i;
+      }
+    }
+    return factors;
+  }
 }
