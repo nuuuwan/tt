@@ -3,8 +3,6 @@ import { Box } from "@mui/material";
 import { ProblemView, ScoreView, VersionView } from "../molecules";
 import { Time, Problem } from "../../nonview/core";
 
-
-
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -58,16 +56,18 @@ export default class HomePage extends Component {
       HomePage.setTopScore(topScore);
     }
 
-
-
     this.setState({
-      topScore, totalPoints, pointsForCurrentProblem,
-      problem, timeStart,
+      topScore,
+      totalPoints,
+      pointsForCurrentProblem,
+      problem,
+      timeStart,
     });
   }
 
   render() {
-    const { totalPoints, pointsForCurrentProblem, topScore, problem } = this.state;
+    const { totalPoints, pointsForCurrentProblem, topScore, problem } =
+      this.state;
 
     return (
       <Box>

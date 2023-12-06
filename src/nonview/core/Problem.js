@@ -1,5 +1,5 @@
 export default class Problem {
-  static LIMIT_TIMES_TABLE = 9;
+  static LIMIT_TIMES_TABLE = 31;
   static HALF_LIFE = 20;
   static POINTS_PER_PROBLEM = 1_000;
 
@@ -24,32 +24,66 @@ export default class Problem {
     return arr;
   }
 
+  static dedupeArr(arr) {
+    return [...new Set(arr)];
+  }
+
   static genAnswerArr(a, b) {
-    return Problem.shuffleArr([
+    let original = [
       a * b,
+      a * b + 10,
+      a * b - 10,
+      // 1
       a * (b + 1),
       (a + 1) * b,
       a * (b - 1),
       (a - 1) * b,
+      // 5, 10
       a * (10 + b),
       a * (b + 5),
       (a + 10) * b,
       (a + 5) * b,
+      // 2
       a * b - 2,
+      a * b + 2,
       a * b + 2,
       Math.floor((a * b) / 2),
       a * b * 2,
-    ]);
+      // 3
+      a * b - 3,
+      a * b + 3,
+      a * b + 3,
+      Math.floor((a * b) / 3),
+      a * b * 3,
+    ];
+    original = original.filter((n) => n > 0);
+    original = Problem.dedupeArr(original);
+    return original.sort((a, b) => a - b);
+  }
+
+  static genPair() {
+    return [Problem.genNumber(), Problem.genNumber()];
+  }
+
+  static genPairBiased() {
+    const pairList = [
+      Problem.genPair(),
+      Problem.genPair(),
+      Problem.genPair(),
+      Problem.genPair(),
+    ];
+    const sortedPairList = pairList.sort((a, b) => -a[0] * a[1] + b[0] * b[1]);
+    console.debug(sortedPairList);
+    return sortedPairList[0];
   }
 
   static gen() {
-    const a = Problem.genNumber();
-    const b = Problem.genNumber();
+    const [a, b] = Problem.genPairBiased();
     return new Problem([a, b], Problem.genAnswerArr(a, b));
   }
 
   static getPointsForCurrent(deltaTime) {
     const p = deltaTime / Problem.HALF_LIFE;
     return Math.ceil(this.POINTS_PER_PROBLEM * (1 - p));
-   }
+  }
 }

@@ -3,9 +3,8 @@ import { NumberView, AnswerView } from "../atoms";
 
 const UNICODE_MULTIPLICATION_SYMBOL = "\u00D7";
 
-
 export default function ProblemView({ onClickAnswer, problem }) {
-  const [a,b] = problem.correctAnswer;
+  const [a, b] = problem.correctAnswer;
   const correctAnswer = a * b;
 
   return (
