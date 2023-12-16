@@ -47,6 +47,7 @@ export default class Problem {
       (n) => n >= 1 && n <= Problem.LIMIT_TIMES_TABLE ** 2
     );
     original = Problem.dedupeArr(original);
+    original = Problem.shuffleArr(original);
     return original;
   }
 
